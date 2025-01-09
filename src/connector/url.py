@@ -6,6 +6,12 @@ async def fetch_url(url):
         page = await browser.new_page()
         await page.goto(url)
         await page.wait_for_selector('div#exchange-rates table.with-border tbody')
+
+        # Get fullpage screenshot for reference
+        screenshot = await page.screenshot(full_page=True)
+
+        # get html content of page also for reference
+        html_content = await page.content()
         
         table_body = await page.query_selector('div#exchange-rates table.with-border tbody')
         rows = await table_body.query_selector_all('tr')
@@ -18,6 +24,6 @@ async def fetch_url(url):
         
         await browser.close()
         
-    return data
+    return data, html_content, screenshot
 
 

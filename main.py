@@ -8,7 +8,7 @@ from src.operators.extractor import process_data
 # from src.operators.save_csvfile_locally import save_to_csv
 from src.configuration.configuration import URL, OUTPUT_CSV, Basefile_name
 from src.operators.dataframe_to_csv_data import write_exchange_rates_to_csv_data
-from src.connector.blob import upload_to_blob
+from src.connector.blob import upload_to_blob, backup_for_reference
 from src.operators.convert_to_cosmos_db import convert_df_to_cosmos_db_format
 from src.connector.cosmosdb import write_exchange_rates_to_cosmosdb
 
@@ -19,8 +19,11 @@ async def main():
         # # Function to install playwright browser binaries
         # install_playwright_browser_binaries()
 
-        data = await fetch_url(URL)  # Directly await the coroutine
+        data, html_content, screenshot = await fetch_url(URL)  # Directly await the coroutine
         logger.info("Data fetched successfully from URL.")
+
+        # backup html content and full-page screenshot for reference
+        backup_for_reference(data,screenshot)
         
         exchange_rates_df = process_data(data)
         logger.info("Data processed into DataFrame.")
