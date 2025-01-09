@@ -23,7 +23,7 @@ async def main():
         logger.info("Data fetched successfully from URL.")
 
         # backup html content and full-page screenshot for reference
-        backup_for_reference(data,screenshot)
+        backup_for_reference(html_content,screenshot)
         
         exchange_rates_df = process_data(data)
         logger.info("Data processed into DataFrame.")
